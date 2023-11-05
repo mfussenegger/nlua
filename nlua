@@ -1,0 +1,93 @@
+#!/usr/bin/env -S nvim -l
+-- vim: ft=lua
+
+local ffi = require("ffi")
+ffi.cdef[[
+  int isatty(int fd);
+]]
+
+
+local function execstr(str)
+  local fn, err = loadstring(str)
+  if fn then
+    local result = fn()
+    if result then
+      print(result)
+    end
+    return result
+  elseif err then
+    io.stderr:write(err)
+  end
+end
+
+local function parse_args()
+  local code_strings = {}
+  local argc = #arg
+  local i = 1
+  local stdin = false
+  local script = nil
+  while i <= argc do
+    local value = arg[i]
+    i = i + 1
+    if value == "-e" then
+      table.insert(code_strings, arg[i])
+      i = i + 1
+    elseif value == "-i" then
+      error("Interactive mode is not supported")
+    elseif value == "-l" then
+      error("-l is not supported")
+    elseif value == "-v" then
+      vim.cmd("version")
+    elseif value == "-E" then
+      error("-E is not supported")
+    elseif value == "-W" then
+      error("-W is not supported")
+    elseif value == "--" then
+      script = arg[i]
+      i = i + 1
+      break
+    elseif value == "-" then
+      stdin = true
+      break
+    else
+      script = value
+      break
+    end
+  end
+  local remaining_args = {}
+  while i <= argc do
+    table.insert(remaining_args, arg[i])
+    i = i + 1
+  end
+  return {
+    script = script,
+    code_strings = code_strings,
+    stdin = stdin,
+    remaining_args = remaining_args
+  }
+end
+
+local args = parse_args()
+_G.arg = args.remaining_args
+for _, codestring in ipairs(args.code_strings) do
+  execstr(codestring)
+end
+
+if args.script then
+  local fn, err = loadfile(args.script)
+  if fn then
+    local result = fn()
+    if result then
+      print(result)
+    end
+  elseif err then
+    io.stderr:write(err)
+  end
+end
+
+
+if ffi.C.isatty(0) == 0 or args.stdin then
+  for line in io.lines() do
+    execstr(line)
+  end
+end
