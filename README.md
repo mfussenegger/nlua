@@ -57,7 +57,31 @@ If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
 
 ## Luarocks setup
 
-TODO
+- Install luarocks using a package manager. For example `pacman -S luarocks`
+- Create a configuration file under `~/.luarocks/config-nlua.lua` with the following content:
+
+```lua
+lua_interpreter = "nlua"
+lua_version = "5.1"
+variables = {
+   LUA_INCDIR = "/usr/include/luajit-2.1"
+}
+```
+
+- Create a wrapper script somewhere in `$PATH` - e.g. in `~/.local/bin/nluarocks` - with the following content:
+
+```bash
+#!/usr/bin/env bash
+
+LUAROCKS_CONFIG=$HOME/.luarocks/config-nlua.lua luarocks --local "$@"
+```
+
+Now you should be able to install packages from luarocks using the Neovim interpreter. For example:
+
+```bash
+nluarocks install busted
+```
+
 
 [luarocks]: https://luarocks.org/
 [busted]: https://lunarmodules.github.io/busted/
