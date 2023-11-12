@@ -51,6 +51,18 @@ See:
 
 ## Installation
 
+### Using luarocks
+
+[![][luarocks-shield]][luarocks-url]
+
+This package is available on [luarocks].
+
+```
+luarocks install --local nlua
+```
+
+### Manually
+
 For [luarocks] support, copy or symlink `nlua` to `/usr/bin/`
 If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
 
@@ -64,7 +76,8 @@ If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
 lua_interpreter = "nlua"
 lua_version = "5.1"
 variables = {
-   LUA_INCDIR = "/usr/include/luajit-2.1"
+   LUA_INCDIR = "/usr/include/luajit-2.1",
+   LUA_BINDIR = "$HOME/.luarocks/bin", -- path to where nlua is installed
 }
 ```
 
@@ -86,3 +99,5 @@ nluarocks install busted
 [luarocks]: https://luarocks.org/
 [busted]: https://lunarmodules.github.io/busted/
 [local-lua-debugger-vscode]: https://github.com/tomblind/local-lua-debugger-vscode
+[luarocks-shield]: https://img.shields.io/luarocks/v/mfussenegger/nlua?logo=lua&color=purple&style=for-the-badge
+[luarocks-pkg-url]: https://luarocks.org/modules/mfussenegger/nlua
