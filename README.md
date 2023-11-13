@@ -53,7 +53,7 @@ See:
 
 ### Using luarocks
 
-[![][luarocks-shield]][luarocks-url]
+[![][luarocks-shield]][luarocks-pkg-url]
 
 This package is available on [luarocks].
 
