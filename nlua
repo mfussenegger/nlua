@@ -1,4 +1,4 @@
-#!/usr/bin/env -S nvim -l
+#!/usr/bin/env -S nvim -u NONE -U NONE -N -i NONE -l
 -- vim: ft=lua
 
 local ffi = require("ffi")
