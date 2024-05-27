@@ -72,10 +72,22 @@ If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
 - Install luarocks using a package manager. For example `pacman -S luarocks`
 - Create a configuration file under `~/.luarocks/config-nlua.lua` with the following content:
 
+`luarocks 3.10.0` and above:
+
 ```lua
-lua_interpreter = "nlua"
 lua_version = "5.1"
 variables = {
+   LUA = "$HOME/.luarocks/bin/nlua" -- path to where nlua is installed
+   LUA_INCDIR = "/usr/include/luajit-2.1",
+}
+```
+
+`luarocks 3.9.2` and below:
+
+```lua
+lua_version = "5.1"
+variables = {
+   lua_interpreter = "nlua"
    LUA_INCDIR = "/usr/include/luajit-2.1",
    LUA_BINDIR = "$HOME/.luarocks/bin", -- path to where nlua is installed
 }
