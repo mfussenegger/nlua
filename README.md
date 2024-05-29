@@ -66,8 +66,15 @@ luarocks install --local nlua
 For [luarocks] support, copy or symlink `nlua` to `/usr/bin/`
 If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
 
-
 ## Luarocks setup
+
+### Automatic project setup
+
+This repository contains a basic [example project](./example_project)
+that demonstrates how you can use `nlua` with `luarocks test`, as well
+as a [GitHub Actions workflow](./.github/workflows/tests.yml).
+
+### Manual configuration
 
 - Install luarocks using a package manager. For example `pacman -S luarocks`
 - Create a configuration file under `~/.luarocks/config-nlua.lua` with the following content:
@@ -77,7 +84,7 @@ If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
 ```lua
 lua_version = "5.1"
 variables = {
-   LUA = "$HOME/.luarocks/bin/nlua" -- path to where nlua is installed
+   LUA = "/home/user/.luarocks/bin/nlua" -- absolute path to where nlua is installed
    LUA_INCDIR = "/usr/include/luajit-2.1",
 }
 ```
@@ -89,7 +96,7 @@ lua_version = "5.1"
 variables = {
    lua_interpreter = "nlua"
    LUA_INCDIR = "/usr/include/luajit-2.1",
-   LUA_BINDIR = "$HOME/.luarocks/bin", -- path to where nlua is installed
+   LUA_BINDIR = "/home/user/.luarocks/bin", -- absolute path to where nlua is installed
 }
 ```
 
