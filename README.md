@@ -69,43 +69,87 @@ If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
 
 ## Luarocks setup
 
+### Neovim Plugin setup
+
+You can use the [plugin
+template](https://github.com/nvim-lua/nvim-lua-plugin-template) to create a new
+repository that contains nlua/busted based test setup.
+
+### Manual configuration
+
 - Install luarocks using a package manager. For example `pacman -S luarocks`
-- Create a configuration file under `~/.luarocks/config-nlua.lua` with the following content:
+- Install `nlua` via `luarocks`:
 
-`luarocks 3.10.0` and above:
+    ```bash
+    luarocks --local install nlua
+    ```
 
-```lua
-lua_version = "5.1"
-variables = {
-   LUA = "$HOME/.luarocks/bin/nlua" -- path to where nlua is installed
-   LUA_INCDIR = "/usr/include/luajit-2.1",
-}
-```
+  At this point you should be able to use `nlua`. Confirm it with:
 
-`luarocks 3.9.2` and below:
+  ```bash
+  echo "print(1 + 2)" | ~/.luarocks/bin/nlua
+  ```
 
-```lua
-lua_version = "5.1"
-variables = {
-   lua_interpreter = "nlua"
-   LUA_INCDIR = "/usr/include/luajit-2.1",
-   LUA_BINDIR = "$HOME/.luarocks/bin", -- path to where nlua is installed
-}
-```
 
-- Create a wrapper script somewhere in `$PATH` - e.g. in `~/.local/bin/nluarocks` - with the following content:
+### Use cases
 
-```bash
-#!/usr/bin/env bash
+- Use it with busted:
 
-LUAROCKS_CONFIG=$HOME/.luarocks/config-nlua.lua luarocks --local "$@"
-```
+  ```bash
+  luarocks --local install busted
+  busted --lua nlua spec/mytest_spec.lua
+  ```
 
-Now you should be able to install packages from luarocks using the Neovim interpreter. For example:
+  If you see a `module 'busted.runner'` not found error you need to update your `LUA_PATH`:
 
-```bash
-nluarocks install busted
-```
+  ```bash
+  eval $(luarocks path --no-bin)
+  busted --lua nlua spec/mytest_spec.lua
+  ```
+
+- Use `nlua` with `luarocks`
+
+  This allows package installation directly via `nlua` instead of a system `lua`
+
+  Create a `~./luarocks/config-nlua.lua` with the following contents.
+
+  For `luarocks 3.10.0` and above:
+
+  ```lua
+  lua_version = "5.1"
+  variables = {
+     LUA = "$HOME/.luarocks/bin/nlua" -- path to where nlua is installed
+     LUA_INCDIR = "/usr/include/luajit-2.1",
+  }
+  ```
+
+  For `luarocks 3.9.2` and below:
+
+  ```lua
+  lua_version = "5.1"
+  variables = {
+     lua_interpreter = "nlua"
+     LUA_INCDIR = "/usr/include/luajit-2.1",
+     LUA_BINDIR = "$HOME/.luarocks/bin", -- path to where nlua is installed
+  }
+  ```
+
+  To make using this custom configuration a bit easier, you can create a small wrapper.
+  Create a file called `nluarocks` somewhere in `$PATH` - e.g. in
+  `~/.local/bin/nluarocks` - with the following content:
+
+  ```bash
+  #!/usr/bin/env bash
+
+  LUAROCKS_CONFIG=$HOME/.luarocks/config-nlua.lua luarocks --local "$@"
+  ```
+
+  Now you should be able to install packages from `luarocks` using the `nvim`
+  Lua-interpreter. For example:
+
+  ```bash
+  nluarocks install busted
+  ```
 
 
 [luarocks]: https://luarocks.org/
