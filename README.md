@@ -51,31 +51,9 @@ See:
 
 ## Installation
 
-### Using luarocks
-
 [![][luarocks-shield]][luarocks-pkg-url]
 
 This package is available on [luarocks].
-
-```
-luarocks install --local nlua
-```
-
-### Manually
-
-For [luarocks] support, copy or symlink `nlua` to `/usr/bin/`
-If you don't need [luarocks] support, copy it into any folder in your `$PATH`.
-
-
-## Luarocks setup
-
-### Neovim Plugin setup
-
-You can use the [plugin
-template](https://github.com/nvim-lua/nvim-lua-plugin-template) to create a new
-repository that contains nlua/busted based test setup.
-
-### Manual configuration
 
 - Install luarocks using a package manager. For example `pacman -S luarocks`
 - Install `nlua` via `luarocks`:
@@ -84,72 +62,85 @@ repository that contains nlua/busted based test setup.
     luarocks --local install nlua
     ```
 
-  At this point you should be able to use `nlua`. Confirm it with:
+- Add `./luarocks/bin/nlua` to your `$PATH`:
+
+    ```bash
+    export PATH=$PATH:$HOME/.luarocks/bin:
+    ```
+
+- Confirm it is working:
 
   ```bash
-  echo "print(1 + 2)" | ~/.luarocks/bin/nlua
+  echo "print(1 + 2)" | nlua
   ```
 
+## Usage
 
-### Use cases
+### Busted
 
-- Use it with busted:
+```bash
+luarocks --local install busted
+busted --lua nlua spec/mytest_spec.lua
+```
 
-  ```bash
-  luarocks --local install busted
-  busted --lua nlua spec/mytest_spec.lua
-  ```
+If you see a `module 'busted.runner'` not found error you need to update your `LUA_PATH`:
 
-  If you see a `module 'busted.runner'` not found error you need to update your `LUA_PATH`:
+```bash
+eval $(luarocks path --no-bin)
+busted --lua nlua spec/mytest_spec.lua
+```
 
-  ```bash
-  eval $(luarocks path --no-bin)
-  busted --lua nlua spec/mytest_spec.lua
-  ```
+### CI for Neovim Plugins
 
-- Use `nlua` with `luarocks`
+You can use the [plugin
+template](https://github.com/nvim-lua/nvim-lua-plugin-template) to create a new
+repository that contains nlua/busted based test setup.
 
-  This allows package installation directly via `nlua` instead of a system `lua`
 
-  Create a `~./luarocks/config-nlua.lua` with the following contents.
+### As Lua interpreter for luarocks
 
-  For `luarocks 3.10.0` and above:
 
-  ```lua
-  lua_version = "5.1"
-  variables = {
-     LUA = "$HOME/.luarocks/bin/nlua" -- path to where nlua is installed
-     LUA_INCDIR = "/usr/include/luajit-2.1",
-  }
-  ```
+This allows package installation directly via `nlua` instead of a system `lua`
 
-  For `luarocks 3.9.2` and below:
+Create a `~./luarocks/config-nlua.lua` with the following contents.
 
-  ```lua
-  lua_version = "5.1"
-  variables = {
-     lua_interpreter = "nlua"
-     LUA_INCDIR = "/usr/include/luajit-2.1",
-     LUA_BINDIR = "$HOME/.luarocks/bin", -- path to where nlua is installed
-  }
-  ```
+For `luarocks 3.10.0` and above:
 
-  To make using this custom configuration a bit easier, you can create a small wrapper.
-  Create a file called `nluarocks` somewhere in `$PATH` - e.g. in
-  `~/.local/bin/nluarocks` - with the following content:
+```lua
+lua_version = "5.1"
+variables = {
+   LUA = "$HOME/.luarocks/bin/nlua" -- path to where nlua is installed
+   LUA_INCDIR = "/usr/include/luajit-2.1",
+}
+```
 
-  ```bash
-  #!/usr/bin/env bash
+For `luarocks 3.9.2` and below:
 
-  LUAROCKS_CONFIG=$HOME/.luarocks/config-nlua.lua luarocks --local "$@"
-  ```
+```lua
+lua_version = "5.1"
+variables = {
+   lua_interpreter = "nlua"
+   LUA_INCDIR = "/usr/include/luajit-2.1",
+   LUA_BINDIR = "$HOME/.luarocks/bin", -- path to where nlua is installed
+}
+```
 
-  Now you should be able to install packages from `luarocks` using the `nvim`
-  Lua-interpreter. For example:
+To make using this custom configuration a bit easier, you can create a small wrapper.
+Create a file called `nluarocks` somewhere in `$PATH` - e.g. in
+`~/.local/bin/nluarocks` - with the following content:
 
-  ```bash
-  nluarocks install busted
-  ```
+```bash
+#!/usr/bin/env bash
+
+LUAROCKS_CONFIG=$HOME/.luarocks/config-nlua.lua luarocks --local "$@"
+```
+
+Now you should be able to install packages from `luarocks` using the `nvim`
+Lua-interpreter. For example:
+
+```bash
+nluarocks install busted
+```
 
 
 [luarocks]: https://luarocks.org/
