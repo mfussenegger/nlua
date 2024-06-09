@@ -62,7 +62,7 @@ This package is available on [luarocks].
     luarocks --local install nlua
     ```
 
-- Add `./luarocks/bin/nlua` to your `$PATH`:
+- Add `~/.luarocks/bin/nlua` to your `$PATH`:
 
     ```bash
     export PATH=$PATH:$HOME/.luarocks/bin:
@@ -102,7 +102,7 @@ repository that contains nlua/busted based test setup.
 
 This allows package installation directly via `nlua` instead of a system `lua`
 
-Create a `~./luarocks/config-nlua.lua` with the following contents.
+Create a `~/.luarocks/config-nlua.lua` with the following contents.
 
 For `luarocks 3.10.0` and above:
 
