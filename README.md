@@ -1,6 +1,6 @@
 # nlua
 
-Lua script that let's you use Neovim as a Lua interpreter.
+Lua script that lets you use Neovim as a Lua interpreter.
 
 Neovim embeds a Lua interpreter, but it doesn't expose the same command line interface as plain `lua`.
 
@@ -34,7 +34,7 @@ Currently supported:
 
 ## Motivation
 
-- It let's you use Neovim as Lua interpreter for [luarocks]. This in turn allows you to run tools like [busted] to test Neovim plugins.
+- It lets you use Neovim as Lua interpreter for [luarocks]. This in turn allows you to run tools like [busted] to test Neovim plugins.
 
 - It allows tools like [local-lua-debugger-vscode] to use the Neovim Lua. Enabling debugging of busted test cases for Neovim plugins.
 
@@ -68,7 +68,7 @@ This package is available on [luarocks].
     export PATH=$PATH:$HOME/.luarocks/bin:
     ```
 
-- Confirm it is working:
+- Confirm it's working:
 
   ```bash
   echo "print(1 + 2)" | nlua
