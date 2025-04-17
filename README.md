@@ -74,6 +74,10 @@ This package is available on [luarocks].
   echo "print(1 + 2)" | nlua
   ```
 
+> [!NOTE]
+>
+> On Windows, luarocks will install a `nlua.bat` wrapper script.
+
 ## Usage
 
 ### Busted

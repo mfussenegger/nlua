@@ -20,4 +20,14 @@ build = {
    install = {
      bin = { nlua = 'nlua', },
    },
+   platforms = {
+     win32 = {
+       install = {
+         bin = { 
+          nlua = 'nlua', 
+          ['nlua.bat'] = 'nlua.bat',
+         },
+       },
+     }
+   },
 }

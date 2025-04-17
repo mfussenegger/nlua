@@ -10,7 +10,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        os: ["ubuntu-24.04", "macos-14", "windows-2019"]
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,18 +25,36 @@ jobs:
         with:
           neovim: true
           version: nightly
+
+      - name: Install C/C++ Compiler
+        uses: rlalik/setup-cpp-compiler@e312c52f6d9664049d97c75ab084c895d9733c0c
+        if: startsWith(matrix.os, 'windows')
+        with:
+          compiler: clang-latest
+
+      - name: Install MSVC Compiler Toolchain
+        if: startsWith(matrix.os, 'windows')
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # release/v1 branch
+
+
       - name: Install Lua
         uses: leso-kn/gh-actions-lua@master
         with:
           luaVersion: "5.1"
       - name: Install Luarocks
-        uses: hishamhm/gh-actions-luarocks@master
+        uses: luarocks/gh-actions-luarocks@master
         with:
-          luarocksVersion: "3.11.0"
+          luarocksVersion: "3.11.1"
 
       - name: Install nlua using luarocks make
         run: luarocks make --local
 
       - name: Run tests
+        if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
         run: |
           luarocks test --local
+
+      - name: Run nlua
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          nlua.bat -v
