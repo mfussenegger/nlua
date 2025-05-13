@@ -1,10 +1,10 @@
 #!/usr/bin/env -S nvim -u NONE -U NONE -N -i NONE -l
 -- vim: ft=lua
 
+local uv = vim.uv or vim.loop
 local ffi = require("ffi")
- 
 local isatty
-if vim.uv.os_uname().sysname:lower():find("windows") ~= nil then
+if uv.os_uname().sysname:lower():find("windows") ~= nil then
   ffi.cdef[[
     int _isatty(int fd);
   ]]
