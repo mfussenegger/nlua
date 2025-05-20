@@ -19,7 +19,9 @@ description = {
   $license
 }
 
-dependencies = $dependencies
+dependencies = {
+  'lua == 5.1',
+}
 
 source = {
   url = repo_url .. '/archive/' .. git_ref .. '.zip',

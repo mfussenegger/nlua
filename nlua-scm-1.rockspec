@@ -10,6 +10,10 @@ deploy = {
     wrap_bin_scripts = false,
 }
 
+dependencies = {
+    "lua == 5.1",
+}
+
 test_dependencies = {
     "nlua"
 }
