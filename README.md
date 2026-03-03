@@ -47,7 +47,7 @@ See:
 ## Requirements
 
 - `env` executable supporting the `-S` option. Run `env --help` in a shell to verify.
-- Neovim 0.9+ with LuaJIT
+- Neovim 0.9+
 
 ## Installation
 
