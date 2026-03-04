@@ -29,17 +29,11 @@ local function parse_args()
     if value == "-e" then
       table.insert(code_strings, arg[i])
       i = i + 1
-    elseif value == "-i" then
-      error("Interactive mode is not supported")
     elseif value == "-l" then
       table.insert(code_strings, string.format("require('%s')", arg[i]))
       i = i + 1
     elseif value == "-v" then
       vim.cmd("version")
-    elseif value == "-E" then
-      error("-E is not supported")
-    elseif value == "-W" then
-      error("-W is not supported")
     elseif value == "--" then
       script = arg[i]
       i = i + 1
@@ -47,6 +41,17 @@ local function parse_args()
     elseif value == "-" then
       stdin = true
       break
+    elseif value:sub(1, 1) == "-" then
+			print(([=[
+usage: %s [options] [script [args]].
+Available options are:
+  -e stat  execute string 'stat'
+  -l name  require library 'name'
+  -v       show version information
+  --       stop handling options
+  -        execute stdin and stop handling options
+			]=]):format(arg[0]))
+			os.exit(1)
     else
       script = value
       break
