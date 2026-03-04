@@ -32,7 +32,8 @@ local function parse_args()
     elseif value == "-i" then
       error("Interactive mode is not supported")
     elseif value == "-l" then
-      error("-l is not supported")
+      table.insert(code_strings, string.format("require('%s')", arg[i]))
+      i = i + 1
     elseif value == "-v" then
       vim.cmd("version")
     elseif value == "-E" then
